@@ -9,21 +9,14 @@
 #include <opencv2\opencv.hpp>
 #include <opencv2/highgui/highgui.hpp>  
 
-
-
-
-
 using namespace cv;
 using namespace std;
-
 
 void writeImages(vector<Mat>, char*);
 
 
 int main()
 {
-	// 获取Kinect设备
-	
 	k4a_capture_t capture = NULL;
 
 	const uint32_t device_count = k4a_device_get_installed_count();
@@ -91,7 +84,7 @@ int main()
 			break;
 		case K4A_WAIT_RESULT_FAILED:
 			printf("Failed to read a capture\n");
-            cv::destroyAllWindows();
+                        cv::destroyAllWindows();
 			k4a_device_close(device);
 			std::system("pause");
 			return 0;
@@ -103,29 +96,13 @@ int main()
 		depthImage = k4a_capture_get_depth_image(capture);
 		irImage = k4a_capture_get_ir_image(capture);
 		
-
-
-
-
-
-
 		color_frame = cv::Mat(k4a_image_get_height_pixels(rgbImage), k4a_image_get_width_pixels(rgbImage), CV_8UC4, k4a_image_get_buffer(rgbImage));
 		depth_frame = cv::Mat(k4a_image_get_height_pixels(depthImage), k4a_image_get_width_pixels(depthImage), CV_16U, k4a_image_get_buffer(depthImage));
 		ir_frame = cv::Mat(k4a_image_get_height_pixels(irImage), k4a_image_get_width_pixels(irImage), CV_16U, k4a_image_get_buffer(irImage));
 
-
-
-
 		cv::imshow("color", color_frame);
-		//RGBBuffer.push_back(color_frame.clone());
-
 		cv::imshow("depth", depth_frame);
 		cv::imshow("ir", ir_frame);
-
-
-
-
-
 
 		k4a_image_release(rgbImage);
 		k4a_image_release(depthImage);
@@ -136,39 +113,11 @@ int main()
 		ir_frame.release();
 
 		k4a_capture_release(capture);
-		//cv::imwrite("test.png", color_frame);
-
-
 
 		if (waitKey(1) == 27)
 			break;
-		
-
-		//Mat i_rgb_resize = i_rgb.clone();       // 缩小方便看
-		////cv::resize(i_rgb_resize, i_rgb_resize, Size(512, 424));
-		//// 显示
-		//RGBBuffer.push_back(i_rgb.clone());
-		//imshow("rgb", i_rgb_resize);
-		//if (waitKey(1) == VK_ESCAPE)
-		//	break;
-		////i_src_depth.copyTo(*tempImage);
-		//imageBuffer.push_back(i_src_depth.clone());
-		//imshow("i_src_depth", i_src_depth);
-		//if (waitKey(1) == VK_ESCAPE)
-		//	break;
-		//IRBuffer.push_back(i_ir.clone());
-		//imshow("ir", i_ir);
-		//if (waitKey(1) == VK_ESCAPE)
-		//	break;
 
 	}
-
-
-	//writeImages(imageBuffer,"DEPTH");
-	//writeImages(IRBuffer,"IR");
-	//writeImages(RGBBuffer, "RGB");
-
-	// 关闭窗口，设备
 	cv::destroyAllWindows();
 	k4a_device_close(device);
 	std::system("pause");
