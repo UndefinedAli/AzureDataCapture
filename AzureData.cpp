@@ -41,6 +41,7 @@ int main()
 	config.color_resolution = K4A_COLOR_RESOLUTION_1080P;
 	config.depth_mode = K4A_DEPTH_MODE_NFOV_UNBINNED;
 	config.camera_fps = K4A_FRAMES_PER_SECOND_30;
+	//If the synchronization identity is not added here, the multi-frame collection will have a problem
 	config.synchronized_images_only = true;
 
 	
@@ -49,10 +50,6 @@ int main()
 		printf("Failed to start device\n");
 		return 0;
 	}
-
-	
-
-
 
 	k4a_image_t irImage;
 	k4a_image_t rgbImage;
@@ -111,7 +108,8 @@ int main()
 		color_frame.release();
 		depth_frame.release();
 		ir_frame.release();
-
+		
+		//Must release capture here!
 		k4a_capture_release(capture);
 
 		if (waitKey(1) == 27)
@@ -123,7 +121,6 @@ int main()
 	std::system("pause");
 	return 0;
 }
-
 
 
 
@@ -139,4 +136,3 @@ void writeImages(vector<Mat> imageData,char* imageCat)
 	}
 	printf("Finish\n");
 }
-
